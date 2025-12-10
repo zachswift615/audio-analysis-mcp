@@ -26,11 +26,11 @@ Add to your project's `.mcp.json`:
 {
   "mcpServers": {
     "audio-analysis": {
-      "command": "/Users/zachswift/.local/bin/uv",
+      "command": "uv",
       "args": [
         "run",
         "--directory",
-        "/Users/zachswift/projects/audio-analysis-mcp",
+        "/path/to/audio-analysis-mcp",
         "python",
         "-m",
         "audio_analysis_mcp.server"
