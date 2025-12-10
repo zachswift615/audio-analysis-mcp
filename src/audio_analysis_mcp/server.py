@@ -15,8 +15,9 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
-# Output directory for generated files
-OUTPUT_DIR = Path(os.environ.get("AUDIO_ANALYSIS_OUTPUT_DIR", "~/.audio-analysis-mcp")).expanduser()
+# Output directory for generated files - ensure absolute path
+_output_env = os.environ.get("AUDIO_ANALYSIS_OUTPUT_DIR", "~/.audio-analysis-mcp")
+OUTPUT_DIR = Path(_output_env).expanduser().resolve()
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 server = Server("audio-analysis")
@@ -89,8 +90,9 @@ def compare(path1: str, path2: str) -> dict:
     y1, sr1 = librosa.load(path1, sr=None)
     y2, sr2 = librosa.load(path2, sr=None)
 
+    # Resample if needed (resample y2 to match y1's rate)
     if sr1 != sr2:
-        return {"error": f"sample rates differ: {sr1} vs {sr2}"}
+        y2 = librosa.resample(y2, orig_sr=sr2, target_sr=sr1)
 
     # Pad to match lengths
     max_len = max(len(y1), len(y2))
@@ -119,8 +121,9 @@ def diff(path1: str, path2: str) -> dict:
     y1, sr1 = librosa.load(path1, sr=None)
     y2, sr2 = librosa.load(path2, sr=None)
 
+    # Resample if needed (resample y2 to match y1's rate)
     if sr1 != sr2:
-        return {"error": f"sample rates differ: {sr1} vs {sr2}"}
+        y2 = librosa.resample(y2, orig_sr=sr2, target_sr=sr1)
 
     max_len = max(len(y1), len(y2))
     y1 = np.pad(y1, (0, max_len - len(y1)))
