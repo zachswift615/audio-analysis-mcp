@@ -73,6 +73,45 @@ Single tool: `audio_analyze(path, op, [path2])`
 
 Images are saved to the directory specified by `AUDIO_ANALYSIS_OUTPUT_DIR` env var. Defaults to `~/.audio-analysis-mcp` if not set.
 
+## Claude Code Skill & Slash Command
+
+This project includes a Claude Code skill and slash command for structured audio comparison workflows.
+
+### Installing the Skill
+
+Copy the skill to your Claude Code skills directory:
+
+```bash
+cp -r .claude/skills/analyze-audio-iterations ~/.claude/skills/
+```
+
+This enables automatic detection when you're comparing audio files, with structured workflows for:
+- Running all 7 analysis types in parallel
+- Building metrics comparison tables
+- Tracking improvements across versions
+- Pattern detection (oscillation, trade-offs, plateaus)
+
+### Installing the Slash Command
+
+Copy the slash command to your Claude Code commands directory:
+
+```bash
+cp .claude/commands/analyze-audio.md ~/.claude/commands/
+```
+
+Then use it with:
+
+```
+/analyze-audio /path/to/reference.wav /path/to/synthesized.wav [version-context]
+```
+
+### Quick Install (Both)
+
+```bash
+cp -r .claude/skills/analyze-audio-iterations ~/.claude/skills/ && \
+cp .claude/commands/analyze-audio.md ~/.claude/commands/
+```
+
 ## Dependencies
 
 - `mcp` - Official MCP Python SDK
